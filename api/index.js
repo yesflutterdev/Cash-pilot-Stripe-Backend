@@ -887,7 +887,9 @@ app.get('/health', (req, res) => {
 // });
 
 
-app.listen(PORT, () => {
-  console.log(`🚀 Stripe backend running on port ${PORT}`);
-  console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`🚀 Stripe backend running on port ${PORT}`);
+//   console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
+// });
+
+export default app;
