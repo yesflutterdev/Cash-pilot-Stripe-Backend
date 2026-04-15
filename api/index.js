@@ -2,11 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const Stripe = require('stripe');
 require('dotenv').config();
+const serverless = require('serverless-http');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Initialize Stripe with your secret key
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY is missing");
+}
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Middleware
@@ -332,7 +338,7 @@ app.delete('/api/payment-method/:paymentMethodId', async (req, res) => {
 });
 
 // ==================== WEBHOOK ENDPOINTS ====================
-
+app.use(express.json());
 // Webhook for subscription events
 app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -884,4 +890,5 @@ app.get('/health', (req, res) => {
 //   console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
 // });
 
-export default app;
+
+module.exports = serverless(app);
