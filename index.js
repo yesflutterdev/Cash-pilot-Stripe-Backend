@@ -336,58 +336,58 @@ app.delete('/api/payment-method/:paymentMethodId', async (req, res) => {
 // ==================== WEBHOOK ENDPOINTS ====================
 
 // Webhook for subscription events
-app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+// app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+//   const sig = req.headers['stripe-signature'];
+//   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   
-  let event;
+//   let event;
   
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
-  } catch (err) {
-    console.log(`Webhook signature verification failed: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+//   try {
+//     event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+//   } catch (err) {
+//     console.log(`Webhook signature verification failed: ${err.message}`);
+//     return res.status(400).send(`Webhook Error: ${err.message}`);
+//   }
   
-  // Handle the event
-  switch (event.type) {
-    case 'customer.subscription.created':
-      const subscriptionCreated = event.data.object;
-      console.log(`Subscription created: ${subscriptionCreated.id}`);
-      // Handle subscription creation (send email, update local state, etc.)
-      break;
+//   // Handle the event
+//   switch (event.type) {
+//     case 'customer.subscription.created':
+//       const subscriptionCreated = event.data.object;
+//       console.log(`Subscription created: ${subscriptionCreated.id}`);
+//       // Handle subscription creation (send email, update local state, etc.)
+//       break;
       
-    case 'customer.subscription.updated':
-      const subscriptionUpdated = event.data.object;
-      console.log(`Subscription updated: ${subscriptionUpdated.id}`);
-      break;
+//     case 'customer.subscription.updated':
+//       const subscriptionUpdated = event.data.object;
+//       console.log(`Subscription updated: ${subscriptionUpdated.id}`);
+//       break;
       
-    case 'customer.subscription.deleted':
-      const subscriptionDeleted = event.data.object;
-      console.log(`Subscription cancelled: ${subscriptionDeleted.id}`);
-      break;
+//     case 'customer.subscription.deleted':
+//       const subscriptionDeleted = event.data.object;
+//       console.log(`Subscription cancelled: ${subscriptionDeleted.id}`);
+//       break;
       
-    case 'invoice.payment_succeeded':
-      const invoice = event.data.object;
-      console.log(`Payment succeeded for invoice: ${invoice.id}`);
-      break;
+//     case 'invoice.payment_succeeded':
+//       const invoice = event.data.object;
+//       console.log(`Payment succeeded for invoice: ${invoice.id}`);
+//       break;
       
-    case 'invoice.payment_failed':
-      const failedInvoice = event.data.object;
-      console.log(`Payment failed for invoice: ${failedInvoice.id}`);
-      break;
+//     case 'invoice.payment_failed':
+//       const failedInvoice = event.data.object;
+//       console.log(`Payment failed for invoice: ${failedInvoice.id}`);
+//       break;
       
-    case 'payment_intent.succeeded':
-      const paymentIntent = event.data.object;
-      console.log(`Payment succeeded: ${paymentIntent.id}`);
-      break;
+//     case 'payment_intent.succeeded':
+//       const paymentIntent = event.data.object;
+//       console.log(`Payment succeeded: ${paymentIntent.id}`);
+//       break;
       
-    default:
-      console.log(`Unhandled event type: ${event.type}`);
-  }
+//     default:
+//       console.log(`Unhandled event type: ${event.type}`);
+//   }
   
-  res.json({ received: true });
-});
+//   res.json({ received: true });
+// });
 
 // ==================== REFUND ENDPOINTS ====================
 
