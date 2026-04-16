@@ -457,6 +457,8 @@ app.post('/api/process-payment', async (req, res) => {
 // ==================== SAVE CARDS (SETUP INTENT) ====================
 
 // Create setup intent for saving card (no charge)
+// In server.js - UPDATE THIS ENDPOINT
+
 app.post('/api/save-card-setup', async (req, res) => {
   try {
     const { customerId, returnUrl } = req.body;
@@ -475,7 +477,8 @@ app.post('/api/save-card-setup', async (req, res) => {
       customer: customer,
       payment_method_types: ['card'],
       usage: 'off_session', // Allows future payments without customer interaction
-      return_url: returnUrl || 'https://your-app.com/setup-complete'
+      // ❌ REMOVE return_url from here
+      // ✅ Only add return_url if confirming (which we're not doing on backend)
     });
     
     res.json({
